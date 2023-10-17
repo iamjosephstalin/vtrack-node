@@ -10,8 +10,10 @@ function paginate(model) {
       const limit = parseInt(req.query.limit);
       const startIndex = (page - 1) * limit;
       const endIndex = page * limit;
-  
+      const all  = await model.countDocuments({});
+
       const result = {};
+      result.count = all;
     // change model.length to model.countDocuments() because you are counting directly from mongodb
       if (endIndex < (await model.countDocuments().exec())) {
         result.next = {
@@ -42,7 +44,7 @@ function paginate(model) {
 router.post('/post', async (req, res) => {
     const data = new roleModel({
         name: req.body.name,
-        role: req.body.role
+        role: parseInt(req.body.role)
     })
 
     try {
