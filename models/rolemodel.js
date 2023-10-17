@@ -2,12 +2,13 @@ const mongoose = require('mongoose');
 
 const roleSchema = new mongoose.Schema({
     name: {
-        required: true,
-        type: String
+        type: String,
+        required: [true, "Please enter value for Role Name!"],
+        unique: [true, "Role Name Already Exist"],
     },
     role: {
-        required: true,
-        type: Number
+        required: [true, "Please select User Type!"],
+        type: String
     }
 })
 

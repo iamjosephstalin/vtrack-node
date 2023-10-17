@@ -44,7 +44,7 @@ function paginate(model) {
 router.post('/post', async (req, res) => {
     const data = new roleModel({
         name: req.body.name,
-        role: parseInt(req.body.role)
+        role: req.body.role
     })
 
     try {
