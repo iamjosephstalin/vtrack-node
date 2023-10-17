@@ -41,7 +41,7 @@ function paginate(model) {
 
 
 //Post Method
-router.post('/post', async (req, res) => {
+router.post('/addRole', async (req, res) => {
     const data = new roleModel({
         name: req.body.name,
         role: req.body.role
@@ -59,7 +59,6 @@ router.post('/post', async (req, res) => {
 //Get all Method
 router.get('/getRoles', paginate(roleModel), async (req, res) => {
     try{
-        // const data = await Model.find();
         res.json(res.paginatedResult);
     }
     catch(error){
@@ -68,7 +67,7 @@ router.get('/getRoles', paginate(roleModel), async (req, res) => {
 })
 
 //Get by ID Method
-router.get('/getOne/:id', async (req, res) => {
+router.get('/getRole/:id', async (req, res) => {
     try{
         const data = await roleModel.findById(req.params.id);
         res.json(data)
@@ -79,7 +78,7 @@ router.get('/getOne/:id', async (req, res) => {
 })
 
 //Update by ID Method
-router.patch('/update/:id', async (req, res) => {
+router.patch('/updateRole/:id', async (req, res) => {
     try {
         const id = req.params.id;
         const updatedData = req.body;
@@ -98,15 +97,30 @@ router.patch('/update/:id', async (req, res) => {
 
 
 //Delete by ID Method
-router.delete('/delete/:id', async (req, res) => {
+router.delete('/deleteRole/:id', async (req, res) => {
     try {
         const id = req.params.id;
         const data = await roleModel.findByIdAndDelete(id)
-        res.send(`Document with ${data.name} has been deleted..`)
+        res.send(`Role ${data.name} has been deleted`)
     }
     catch (error) {
         res.status(400).json({ message: error.message })
     }
+})
+
+// Search Roles
+router.get("/searchRole", async (req,res) => {
+    try {
+        const allRoles = await roleModel.find({ name : { $regex : new RegExp(String(req.query.text), "i") } });
+        if(!allRoles || allRoles.length === 0){
+            res.status(400).send({error : "No Role was found"});
+        }else{
+            res.status(200).send(allRoles)
+        }  
+    }
+    catch (error) {
+        res.status(400).json({ message: error.message })
+    }   
 })
 
 module.exports = router;
