@@ -7,7 +7,7 @@ const router = express.Router()
 router.post('/addTag', async (req, res) => {
     const data = new tagModel({
         name: req.body.name,
-        default: req.body.default
+        color: req.body.color
     })
     try {
         const dataToSave = await data.save();
