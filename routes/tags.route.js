@@ -1,11 +1,11 @@
 const express = require('express');
-const unitModel = require('../models/units.model');
+const tagModel = require('../models/tags.model');
 
 const router = express.Router()
 
 //Post Method
-router.post('/addUnit', async (req, res) => {
-    const data = new unitModel({
+router.post('/addTag', async (req, res) => {
+    const data = new tagModel({
         name: req.body.name,
         default: req.body.default
     })
@@ -19,10 +19,10 @@ router.post('/addUnit', async (req, res) => {
 })
 
 //Get all Method
-router.get('/getUnits',  async (req, res) => {
+router.get('/getTags',  async (req, res) => {
     try{
-        unitModel.find({}).then(function (unit) {
-            res.json(unit);
+        tagModel.find({}).then(function (tag) {
+            res.json(tag);
         });
     }
     catch(error){
@@ -31,9 +31,9 @@ router.get('/getUnits',  async (req, res) => {
 })
 
 //Get by ID Method
-router.get('/getUnit/:id', async (req, res) => {
+router.get('/getTag/:id', async (req, res) => {
     try{
-        const data = await unitModel.findById(req.params.id);
+        const data = await tagModel.findById(req.params.id);
         res.json(data)
     }
     catch(error){
@@ -42,13 +42,13 @@ router.get('/getUnit/:id', async (req, res) => {
 })
 
 //Update by ID Method
-router.patch('/updateUnit/:id', async (req, res) => {
+router.patch('/updateTag/:id', async (req, res) => {
     try {
         const id = req.params.id;
         const updatedData = req.body;
         const options = { new: true };
 
-        const result = await unitModel.findByIdAndUpdate(
+        const result = await tagModel.findByIdAndUpdate(
             id, updatedData, options
         )
 
@@ -61,11 +61,11 @@ router.patch('/updateUnit/:id', async (req, res) => {
 
 
 //Delete by ID Method
-router.delete('/deleteUnit/:id', async (req, res) => {
+router.delete('/deleteTag/:id', async (req, res) => {
     try {
         const id = req.params.id;
-        const data = await unitModel.findByIdAndDelete(id)
-        res.send(`Unit ${data.name} has been deleted`)
+        const data = await tagModel.findByIdAndDelete(id)
+        res.send(`Tag ${data.name} has been deleted`)
     }
     catch (error) {
         res.status(400).json({ message: error.message })
@@ -73,13 +73,13 @@ router.delete('/deleteUnit/:id', async (req, res) => {
 })
 
 // Search Roles
-router.get("/searchUnit", async (req,res) => {
+router.get("/searchTag", async (req,res) => {
     try {
-        const allUnit = await unitModel.find({ name : { $regex : new RegExp(String(req.query.text), "i") } });
-        if(!allUnit || allUnit.length === 0){
+        const allTag = await tagModel.find({ name : { $regex : new RegExp(String(req.query.text), "i") } });
+        if(!allTag || allTag.length === 0){
             res.status(400).send({error : "No Role was found"});
         }else{
-            res.status(200).send(allUnit)
+            res.status(200).send(allTag)
         }  
     }
     catch (error) {
