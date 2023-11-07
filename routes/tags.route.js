@@ -3,6 +3,43 @@ const tagModel = require('../models/tags.model');
 
 const router = express.Router()
 
+
+// Pagination function
+function paginate(model) {
+    return async (req, res, next) => {
+      const page = parseInt(req.query.page);
+      const limit = parseInt(req.query.limit);
+      const startIndex = (page - 1) * limit;
+      const endIndex = page * limit;
+      const all  = await model.countDocuments({});
+
+      const result = {};
+      result.count = all;
+    // change model.length to model.countDocuments() because you are counting directly from mongodb
+      if (endIndex < (await model.countDocuments().exec())) {
+        result.next = {
+          page: page + 1,
+          limit: limit,
+        };
+      }
+      if (startIndex > 0) {
+        result.previous = {
+          page: page - 1,
+          limit: limit,
+        };
+      }
+      try {
+  //       .limit(limit).skip(startIndex) replaced the slice method because 
+  //       it is done directly from mongodb and they are one of mongodb methods
+        result.results = await model.find().limit(limit).skip(startIndex);
+        res.paginatedResult = result;
+        next();
+      } catch (e) {
+        res.status(500).json({ message: e.message });
+      }
+    };
+  }
+
 //Post Method
 router.post('/addTag', async (req, res) => {
     const data = new tagModel({
@@ -19,7 +56,7 @@ router.post('/addTag', async (req, res) => {
 })
 
 //Get all Method
-router.get('/getTags',  async (req, res) => {
+router.get('/getTags', paginate(tagModel), async (req, res) => {
     try{
         tagModel.find({}).then(function (tag) {
             res.json(tag);

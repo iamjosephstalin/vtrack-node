@@ -10,6 +10,7 @@ router.post('/addCurrency', async (req,res) => {
                 'name': req.body.name,
                 'default': req.body.default
                 };
+    console.log(query);
     req.newData.username = req.user.username;
 
     MyModel.findOneAndUpdate(query, req.newData, {upsert: true}, function(err, doc) {
