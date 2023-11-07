@@ -71,12 +71,12 @@ router.delete('/deleteVAT/:id', async (req, res) => {
     }
 })
 
-// Search Roles
+// Search VAT
 router.get("/searchVAT", async (req,res) => {
     try {
         const allVAT = await vatModel.find({ name : { $regex : new RegExp(String(req.query.text), "i") } });
         if(!allVAT || allVAT.length === 0){
-            res.status(400).send({error : "No Role was found"});
+            res.status(400).send({error : "No VAT was found"});
         }else{
             res.status(200).send(allVAT)
         }  

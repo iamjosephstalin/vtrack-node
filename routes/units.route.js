@@ -72,12 +72,12 @@ router.delete('/deleteUnit/:id', async (req, res) => {
     }
 })
 
-// Search Roles
+// Search Unit
 router.get("/searchUnit", async (req,res) => {
     try {
         const allUnit = await unitModel.find({ name : { $regex : new RegExp(String(req.query.text), "i") } });
         if(!allUnit || allUnit.length === 0){
-            res.status(400).send({error : "No Role was found"});
+            res.status(400).send({error : "No Unit was found"});
         }else{
             res.status(200).send(allUnit)
         }  

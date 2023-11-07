@@ -3,6 +3,21 @@ const currencyModel = require('../models/currencies.model');
 
 const router = express.Router()
 
+// Upsert data 
+router.post('/addCurrency', async (req,res) => {
+
+    var query = {
+                'name': req.body.name,
+                'default': req.body.default
+                };
+    req.newData.username = req.user.username;
+
+    MyModel.findOneAndUpdate(query, req.newData, {upsert: true}, function(err, doc) {
+        if (err) return res.send(500, {error: err});
+        return res.send('Succesfully saved.');
+    });
+});
+
 //Post Method
 router.post('/addCurrency', async (req, res) => {
     const data = new currencyModel({
@@ -72,12 +87,12 @@ router.delete('/deleteCurrency/:id', async (req, res) => {
     }
 })
 
-// Search Roles
+// Search Currency
 router.get("/searchCurrency", async (req,res) => {
     try {
         const allCurrency = await currencyModel.find({ name : { $regex : new RegExp(String(req.query.text), "i") } });
         if(!allCurrency || allCurrency.length === 0){
-            res.status(400).send({error : "No Role was found"});
+            res.status(400).send({error : "No Currency was found"});
         }else{
             res.status(200).send(allCurrency)
         }  

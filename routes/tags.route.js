@@ -72,12 +72,12 @@ router.delete('/deleteTag/:id', async (req, res) => {
     }
 })
 
-// Search Roles
-router.get("/searchTag", async (req,res) => {
+// Search Tagname
+router.get("/searchTagName", async (req,res) => {
     try {
         const allTag = await tagModel.find({ name : { $regex : new RegExp(String(req.query.text), "i") } });
         if(!allTag || allTag.length === 0){
-            res.status(400).send({error : "No Role was found"});
+            res.status(400).send({error : "No Tag was found"});
         }else{
             res.status(200).send(allTag)
         }  
@@ -86,5 +86,21 @@ router.get("/searchTag", async (req,res) => {
         res.status(400).json({ message: error.message })
     }   
 })
+
+// Search Tagcolor
+router.get("/searchTagColor", async (req,res) => {
+    try {
+        const allTag = await tagModel.find({ color : { $regex : new RegExp(String(req.query.text), "i") } });
+        if(!allTag || allTag.length === 0){
+            res.status(400).send({error : "No Color was found"});
+        }else{
+            res.status(200).send(allTag)
+        }  
+    }
+    catch (error) {
+        res.status(400).json({ message: error.message })
+    }   
+})
+
 
 module.exports = router;
