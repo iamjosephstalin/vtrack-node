@@ -3,19 +3,24 @@ const vatModel = require('../models/vat.model');
 
 const router = express.Router()
 
-//Post Method
-router.post('/addVAT', async (req, res) => {
-    const data = new vatModel({
-        name: req.body.name,
-    })
-    try {
-        const dataToSave = await data.save();
-        res.status(200).json(dataToSave)
-    }
-    catch (error) {
-        res.status(400).json({message: error.message})
-    }
-})
+
+// Upsert data 
+router.post('/addVAT', async (req,res) => {
+
+    req.body.forEach(async function (arrayItem) {
+
+        const filter = { name: arrayItem.name };
+
+        await VATModel.countDocuments(filter);
+
+        await VATModel.findOneAndUpdate(filter, update, {
+        new: true,
+        upsert: true // Make this update into an upsert
+        });
+        });
+        res.send("VAT Data has been Stored Successfully");
+
+});
 
 //Get all Method
 router.get('/getVAT',  async (req, res) => {

@@ -6,33 +6,21 @@ const router = express.Router()
 // Upsert data 
 router.post('/addCurrency', async (req,res) => {
 
-    var query = {
-                'name': req.body.name,
-                'default': req.body.default
-                };
-    console.log(query);
-    req.newData.username = req.user.username;
+    req.body.forEach(async function (arrayItem) {
 
-    MyModel.findOneAndUpdate(query, req.newData, {upsert: true}, function(err, doc) {
-        if (err) return res.send(500, {error: err});
-        return res.send('Succesfully saved.');
-    });
+        const filter = { name: arrayItem.name };
+        const update = { default: arrayItem.default };
+
+        await currencyModel.countDocuments(filter);
+
+        await currencyModel.findOneAndUpdate(filter, update, {
+        new: true,
+        upsert: true // Make this update into an upsert
+        });
+        });
+        res.send("Currency Data has been Stored Successfully");
+
 });
-
-//Post Method
-router.post('/addCurrency', async (req, res) => {
-    const data = new currencyModel({
-        name: req.body.name,
-        default: req.body.default
-    })
-    try {
-        const dataToSave = await data.save();
-        res.status(200).json(dataToSave)
-    }
-    catch (error) {
-        res.status(400).json({message: error.message})
-    }
-})
 
 //Get all Method
 router.get('/getCurrencies',  async (req, res) => {

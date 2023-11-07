@@ -3,20 +3,25 @@ const unitModel = require('../models/units.model');
 
 const router = express.Router()
 
-//Post Method
-router.post('/addUnit', async (req, res) => {
-    const data = new unitModel({
-        name: req.body.name,
-        default: req.body.default
-    })
-    try {
-        const dataToSave = await data.save();
-        res.status(200).json(dataToSave)
-    }
-    catch (error) {
-        res.status(400).json({message: error.message})
-    }
-})
+
+// Upsert data 
+router.post('/addUnit', async (req,res) => {
+
+    req.body.forEach(async function (arrayItem) {
+
+        const filter = { name: arrayItem.name };
+        const update = { default: arrayItem.default };
+
+        await unitModel.countDocuments(filter);
+
+        await unitModel.findOneAndUpdate(filter, update, {
+        new: true,
+        upsert: true // Make this update into an upsert
+        });
+        });
+        res.send("Unit Data has been Stored Successfully");
+
+});
 
 //Get all Method
 router.get('/getUnits',  async (req, res) => {
