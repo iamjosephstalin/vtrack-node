@@ -7,8 +7,8 @@ const unitSchema = new mongoose.Schema({
         unique: [true, "Unit Name Already Exist"],
     },
     default: {
-        type: String,
-        default: "no"
+        type: Boolean,
+        default: false
     }
 })
 

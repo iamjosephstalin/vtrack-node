@@ -7,8 +7,8 @@ const currencySchema = new mongoose.Schema({
         unique: [true, "Currency Name Already Exist"],
     },
     default: {
-        type: String,
-        default: "no"
+        type: Boolean,
+        default: false
     }
 })
 
