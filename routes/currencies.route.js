@@ -8,8 +8,8 @@ router.post('/addCurrency', async (req,res) => {
 
     req.body.forEach(async function (arrayItem) {
 
-        const filter = { name: arrayItem.name };
-        const update = { default: arrayItem.default };
+        const filter = { _id: arrayItem.id };
+        const update = { name: arrayItem.name, default: arrayItem.default };
 
         await currencyModel.countDocuments(filter);
 
