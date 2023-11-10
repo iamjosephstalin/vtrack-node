@@ -9,7 +9,8 @@ router.post('/addVAT', async (req,res) => {
 
     req.body.forEach(async function (arrayItem) {
 
-        const filter = { name: arrayItem.name };
+        const filter = { _id: arrayItem.id };
+        const update = { name: arrayItem.name};
 
         await VATModel.countDocuments(filter);
 
