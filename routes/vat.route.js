@@ -1,4 +1,5 @@
 const express = require('express');
+const mongoose = require('mongoose');
 const vatModel = require('../models/vat.model');
 
 const router = express.Router()
@@ -9,7 +10,8 @@ router.post('/addVAT', async (req,res) => {
 
     req.body.forEach(async function (arrayItem) {
 
-        const filter = { _id: arrayItem.id };
+        var id = (arrayItem.id != null) ? arrayItem.id : new mongoose.Types.ObjectId(); 
+        const filter = { _id: id };
         const update = { name: arrayItem.name};
 
         await VATModel.countDocuments(filter);

@@ -1,4 +1,5 @@
 const express = require('express');
+const mongoose = require('mongoose');
 const currencyModel = require('../models/currencies.model');
 
 const router = express.Router()
@@ -8,7 +9,8 @@ router.post('/addCurrency', async (req,res) => {
 
     req.body.forEach(async function (arrayItem) {
 
-        const filter = { _id: arrayItem.id };
+        var id = (arrayItem.id != null) ? arrayItem.id : new mongoose.Types.ObjectId(); 
+        const filter = { _id: id };
         const update = { name: arrayItem.name, default: arrayItem.default };
 
         await currencyModel.countDocuments(filter);
