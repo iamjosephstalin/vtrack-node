@@ -14,9 +14,9 @@ router.post('/addVAT', async (req,res) => {
         const filter = { _id: id };
         const update = { name: arrayItem.name};
 
-        await VATModel.countDocuments(filter);
+        await vatModel.countDocuments(filter);
 
-        await VATModel.findOneAndUpdate(filter, update, {
+        await vatModel.findOneAndUpdate(filter, update, {
         new: true,
         upsert: true // Make this update into an upsert
         });
