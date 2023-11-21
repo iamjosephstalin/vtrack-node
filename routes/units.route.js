@@ -59,7 +59,7 @@ router.patch('/updateUnit/:id', async (req, res) => {
             id, updatedData, options
         )
 
-        res.send(result)
+        res.status(200).send(result)
     }
     catch (error) {
         res.status(400).json({ message: error.message })
