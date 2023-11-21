@@ -43,7 +43,7 @@ function paginate(model) {
 //Post Method
 router.post('/addAPI', async (req, res) => {
     const data = new APIModel({
-        name: req.body.api,
+        api: req.body.api,
         status: req.body.status,
         products: req.body.products,
         orders: req.body.orders,
