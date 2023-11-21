@@ -117,9 +117,9 @@ router.delete('/deleteAPI/:id', async (req, res) => {
 // Search Tagname
 router.get("/searchAPI", async (req,res) => {
     try {
-        const allAPI = await APIModel.find({ name : { $regex : new RegExp(String(req.query.text), "i") } });
+        const allAPI = await APIModel.find({ api : { $regex : new RegExp(String(req.query.text), "i") } });
         if(!allAPI || allAPI.length === 0){
-            res.status(400).send({error : "No Tag was found"});
+            res.status(400).send({error : "No API was found"});
         }else{
             res.status(200).send(allAPI)
         }  
