@@ -107,7 +107,7 @@ router.delete('/deleteAPI/:id', async (req, res) => {
     try {
         const id = req.params.id;
         const data = await APIModel.findByIdAndDelete(id)
-        res.send(`API ${data.name} has been deleted`)
+        res.send(`API ${data.api} has been deleted`)
     }
     catch (error) {
         res.status(400).json({ message: error.message })

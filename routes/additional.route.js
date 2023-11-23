@@ -103,7 +103,7 @@ router.delete('/deleteField/:id', async (req, res) => {
     try {
         const id = req.params.id;
         const data = await addModel.findByIdAndDelete(id)
-        res.send(`Additional Field ${data.name} has been deleted`)
+        res.send(`Additional Field ${data.field} has been deleted`)
     }
     catch (error) {
         res.status(400).json({ message: error.message })
