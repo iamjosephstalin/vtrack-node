@@ -10,8 +10,8 @@ const AddSchema = new mongoose.Schema({
         required: [true, "Please select a Group!"],
     },
     field: {
-        type: Boolean,
-        default: false
+        type: String,
+        required: [true, "Please Enter the name of the field!"],
     }
 })
 
