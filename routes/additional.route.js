@@ -97,6 +97,29 @@ router.patch('/updateField/:id', async (req, res) => {
     }
 })
 
+router.post('/sortFields', async (req,res) => {
+
+    req.body.forEach(async function (arrayItem) {
+
+        var id = (arrayItem.id != null) ? arrayItem.id : new mongoose.Types.ObjectId(); 
+        const filter = { _id: id };
+        const update = { 
+            assigned: arrayItem.assigned,
+            group: arrayItem.group,
+            field: arrayItem.field,
+            order: arrayItem.order,
+        };
+
+        await addModel.countDocuments(filter);
+
+        await addModel.findOneAndUpdate(filter, update, {
+        new: true,
+        upsert: true // Make this update into an upsert
+        });
+        });
+        res.status(200).send("Rows has been Ordered!");
+
+});
 
 //Delete by ID Method
 router.delete('/deleteField/:id', async (req, res) => {
