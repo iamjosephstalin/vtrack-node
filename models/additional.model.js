@@ -1,8 +1,7 @@
 const mongoose = require('mongoose');
-const autoIncrement = require('mongoose-sequence')(mongoose);
+const autoIncrement = require('mongoose-plugin-autoinc');
 
 const AddSchema = new mongoose.Schema({
-    _id: Number,
     assigned: {
         type: String,
         required: [true, "Please select a value!"],
@@ -14,10 +13,14 @@ const AddSchema = new mongoose.Schema({
     field: {
         type: String,
         required: [true, "Please Enter the name of the field!"],
-    }
-},
-{_id : false}
-)
-AddSchema.plugin(autoIncrement);
+    },
+    order: Number
+});
+
+AddSchema.plugin(autoIncrement.autoIncrement, {
+    model: 'additional',
+    field: 'order',
+    startAt: 1,
+  });
 
 module.exports = mongoose.model('additional', AddSchema)
