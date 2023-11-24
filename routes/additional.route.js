@@ -59,8 +59,8 @@ router.post('/addField', async (req, res) => {
 //Get all Method
 router.get('/getField', paginate(addModel), async (req, res) => {
     try{
-        addModel.find({}).then(function (tag) {
-            res.json(tag);
+        addModel.find({}).sort({ _id: 1 }).then(function (add) {
+            res.json(add);
         });
     }
     catch(error){
