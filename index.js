@@ -6,6 +6,7 @@ const apiRoutes = require('./routes/API.route');
 const unitRoutes = require('./routes/units.route');
 const tagRoutes = require('./routes/tags.route');
 const addRoutes = require('./routes/additional.route');
+const machineRoutes = require('./routes/machines.route');
 var cors = require('cors');
 
 const express = require('express');
@@ -26,7 +27,7 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
-app.use('/api', rolesRoutes,currencyRoutes,vatRoutes,unitRoutes,tagRoutes,apiRoutes,addRoutes);
+app.use('/api', rolesRoutes,currencyRoutes,vatRoutes,unitRoutes,tagRoutes,apiRoutes,addRoutes,machineRoutes);
 
 app.listen(3000, () => {
     console.log(`Server Started at ${3000}`);
