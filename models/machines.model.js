@@ -20,8 +20,9 @@ const machineSchema = new mongoose.Schema({
         type: Number,
     },
     currency: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Currency'
+        type: String,
+        // type: mongoose.Schema.Types.ObjectId,
+        // ref: 'Currency'
     },
     shift: {
         type: Number,
@@ -29,8 +30,10 @@ const machineSchema = new mongoose.Schema({
     hour: {
         type: Number,
     },
-    order: Number
-});
+    order: {
+        type: Number,
+        unique: false 
+    }});
 
 machineSchema.plugin(autoIncrement.autoIncrement, {
     model: 'machine',

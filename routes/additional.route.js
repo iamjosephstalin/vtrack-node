@@ -99,25 +99,34 @@ router.patch('/updateField/:id', async (req, res) => {
 
 router.post('/sortFields', async (req,res) => {
 
-    req.body.forEach(async function (arrayItem) {
-
-        var id = (arrayItem.id != null) ? arrayItem.id : new mongoose.Types.ObjectId(); 
-        const filter = { _id: id };
-        const update = { 
-            assigned: arrayItem.assigned,
-            group: arrayItem.group,
-            field: arrayItem.field,
-            order: arrayItem.order,
-        };
-
-        await addModel.countDocuments(filter);
-
-        await addModel.findOneAndUpdate(filter, update, {
-        new: true,
-        upsert: true // Make this update into an upsert
-        });
-        });
+    req.body.forEach(async function (arrayItem) {        
+            const filter = { _id: arrayItem._id };
+            const updatedData = arrayItem;
+            const options = { new: true };
+    
+            await addModel.findByIdAndUpdate(
+                filter, updatedData, options
+            );
+    });
         res.status(200).send("Rows has been Ordered!");
+        
+        // var id = (arrayItem.id != null) ? arrayItem.id : new mongoose.Types.ObjectId(); 
+        // const filter = { _id: id };
+        // const update = { 
+        //     assigned: arrayItem.assigned,
+        //     group: arrayItem.group,
+        //     field: arrayItem.field,
+        //     order: arrayItem.order,
+        // };
+
+        // await addModel.countDocuments(filter);
+
+        // await addModel.findOneAndUpdate(filter, update, {
+        // new: true,
+        // upsert: true // Make this update into an upsert
+        // });
+        // });
+        // res.status(200).send("Rows has been Ordered!");
 
 });
 

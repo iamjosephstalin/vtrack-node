@@ -14,7 +14,10 @@ const AddSchema = new mongoose.Schema({
         type: String,
         required: [true, "Please Enter the name of the field!"],
     },
-    order: Number
+    order: {
+        type: Number,
+        unique: false 
+    }
 });
 
 AddSchema.plugin(autoIncrement.autoIncrement, {
