@@ -194,7 +194,7 @@ router.get("/searchEndMachine", async (req,res) => {
 // Search Price
 router.get("/searchPrice", async (req,res) => {
     try {
-        const allAPI = await machineModel.find({ price : { $regex : new RegExp(String(req.query.text), "i") } });
+        const allAPI = await machineModel.find({ price : req.query.text });
         if(!allAPI || allAPI.length === 0){
             res.status(400).send({error : "No Data found"});
         }else{
