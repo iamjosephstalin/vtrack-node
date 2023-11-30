@@ -113,6 +113,22 @@ router.get("/searchClientActive", async (req,res) => {
 })
 
 
+// Search TAX
+router.get("/searchClientTax", async (req,res) => {
+    try {
+        const allClient = await clientModel.find({ tax : { $regex : new RegExp(String(req.query.text), "i") } });
+        if(!allClient || allClient.length === 0){
+            res.status(400).send({error : "No Data found"});
+        }else{
+            res.status(200).send(allClient)
+        }  
+    }
+    catch (error) {
+        res.status(400).json({ message: error.message })
+    }   
+})
+
+
 // Search Address
 router.get("/searchClientAddress", async (req,res) => {
     try {
