@@ -148,7 +148,23 @@ router.get("/searchClientCity", async (req,res) => {
 // Search Postal
 router.get("/searchClientPostal", async (req,res) => {
     try {
-        const allClient = await clientModel.find({ postal : { $regex : new RegExp(String(req.query.text), "i") } });
+        const allClient = await clientModel.find({ postal : req.query.text });
+        if(!allClient || allClient.length === 0){
+            res.status(400).send({error : "No Data found"});
+        }else{
+            res.status(200).send(allClient)
+        }  
+    }
+    catch (error) {
+        res.status(400).json({ message: error.message })
+    }   
+})
+
+
+// Search Phone
+router.get("/searchClientPhone", async (req,res) => {
+    try {
+        const allClient = await clientModel.find({ phone : { $regex : new RegExp(String(req.query.text), "i") } });
         if(!allClient || allClient.length === 0){
             res.status(400).send({error : "No Data found"});
         }else{
